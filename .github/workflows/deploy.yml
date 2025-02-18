@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to IBM Cloud Container Registry
+        run: ibmcloud cr login
+
+      - name: Build and Push Docker Images
+        run: |
+          docker build -t us.icr.io/mynamespace/myapp:latest .
+          docker push us.icr.io/mynamespace/myapp:latest
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/backend-deployment.yaml
+          kubectl apply -f k8s/frontend-deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      

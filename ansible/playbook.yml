@@ -1,0 +1,10 @@
+- name: Deploy Microservices
+
+  hosts: localhost
+
+  tasks:
+
+    - name: Pull Backend Docker Image
+
+      command: docker pull us.icr.io/namespacetony/backend-app:1.0
+
